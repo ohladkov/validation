@@ -1,0 +1,98 @@
+import defaults from './defaults';
+import {
+  convertHtmlCollectionToArray,
+  getSubmitButton,
+  validateField,
+  getRadioFields,
+  isRadio,
+} from './utils';
+
+export default class Validator {
+  constructor(form, options) {
+    this.form = form;
+    this.options = Object.assign({}, defaults, options);
+  }
+
+  get fields() {
+    return convertHtmlCollectionToArray(this.form.elements);
+  }
+
+  get requiredFields() {
+    return this.fields.filter(field => field.required);
+  }
+
+  get invalidFields() {
+    return this.requiredFields.filter(field => Boolean(field.errorMessage));
+  }
+
+  get radioFields() {
+    return getRadioFields(this.fields);
+  }
+
+  get submitButton() {
+    return getSubmitButton(this.fields);
+  }
+
+  validate(field) {
+    const { options } = this;
+
+    if (!field) {
+      this.requiredFields.forEach(requiredField => validateField(requiredField, options));
+      this.toggleSubmitButton();
+
+      return;
+    }
+
+    const radioFields = isRadio(field) ? this.radioFields : [];
+
+    validateField(field, options, radioFields);
+    this.toggleSubmitButton();
+
+    return this;
+  }
+
+  toggleSubmitButton() {
+    this.submitButton.disabled = Boolean(this.invalidFields.length);
+
+    return this;
+  }
+
+  onChange() {
+    this.requiredFields.forEach((requiredField) => {
+      requiredField.addEventListener('change', (e) => {
+        e.preventDefault();
+
+        this.validate(e.target);
+      });
+    });
+
+    return this;
+  }
+
+  onSubmit() {
+    this.form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      this.validate();
+
+      if (this.invalidFields.length) {
+        return false;
+      }
+
+      this.form.reset();
+    });
+
+    return this;
+  }
+
+  init() {
+    if (!this.form.noValidate) {
+      this.form.noValidate = true;
+    }
+
+    this.onChange();
+    this.onSubmit();
+
+    return this;
+  }
+}

@@ -1,0 +1,90 @@
+$error-color: #e8442d;
+$success-color: #1e8334;
+
+.form-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.form {
+  width: 100%;
+  max-width: 550px;
+  padding: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  background: #eaeced;
+
+  .note {
+    display: block;
+    margin-top: 30px;
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 17px;
+    position: relative;
+
+    &.invalid {
+      .form {
+        &__field {
+          border-color: $error-color;
+        }
+      }
+    }
+
+    .error-message {
+      display: block;
+      margin-top: 3px;
+      font-size: 14px;
+      color: $error-color;
+    }
+
+    abbr {
+      font-weight: bold;
+      color: $error-color;
+    }
+  }
+
+  &__label {
+    display: inline-block;
+    margin-bottom: 3px;
+  }
+
+  &__field {
+    border-radius: 3px !important;
+
+    &--textarea {
+      min-height: 100px;
+    }
+  }
+
+  &__requirements {
+    position: absolute;
+    bottom: -14px;
+    font-size: 75%;
+    color: $error-color;
+  }
+
+  .btn {
+    padding: 7px 30px;
+    color: #fff;
+    background-color: #222;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:not([disabled]):hover {
+      opacity: 0.7;
+    }
+
+    &--reset {
+      color: #222;
+      background-color: #fff;
+    }
+  }
+}
