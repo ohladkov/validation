@@ -72,6 +72,8 @@ export default class Validator {
   onResponseSuccess() {
     alert('success'); // TODO: Handle success response
 
+    this.form.reset();
+
     return this;
   }
 
@@ -98,6 +100,8 @@ export default class Validator {
       }
 
       const { submitOptions: options } = this.options;
+
+      options.body = new FormData(this.form);
 
       const responseData = await getResponseData(
         this.action,

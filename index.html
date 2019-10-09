@@ -12,37 +12,37 @@
 
 <body>
   <div class="form-wrap">
-    <form action="http://demo7069820.mockable.io/form" id="form" class="form">
+    <form action="http://localhost:8081/form" enctype="multipart/form-data" id="form" class="form">
       <div class="form__group">
         <label class="form__label" for="name">Name: (John Doe) <abbr>*</abbr></label>
-        <input class="form__field validate" type="text" id="name" placeholder="Name"
+        <input class="form__field validate" type="text" name="name" id="name" placeholder="Name"
           pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" required />
       </div>
 
       <div class="form__group">
         <label class="form__label" for="email">Email: (johnDoe@domain.com) <abbr>*</abbr></label>
-        <input class="form__field" type="email" id="email" placeholder="Email" required />
+        <input class="form__field" type="email" name="email" id="email" placeholder="Email" required />
       </div>
 
       <div class="form__group">
         <label class="form__label" for="password">Password (at least 4 symbols, max - 6): <abbr>*</abbr></label>
-        <input class="form__field validate" type="password" id="password" placeholder="Password" minlength="4" maxlength="6"
+        <input class="form__field validate" type="password" name="password" id="password" placeholder="Password" minlength="4" maxlength="6"
           autocomplete="current-password" required />
       </div>
 
       <div class="form__group">
-        <label class="form__label" for="number">Age: (18-140) <abbr>*</abbr></label>
-        <input class="form__field" type="number" id="number" placeholder="Number" min="18" max="140" required />
+        <label class="form__label" for="age">Age: (18-140) <abbr>*</abbr></label>
+        <input class="form__field" type="number" name="age" id="age" placeholder="age" min="18" max="140" required />
       </div>
 
       <div class="form__group">
         <label class="form__label" for="url">Url: (http://johnDoe.com) <abbr>*</abbr></label>
-        <input class="form__field" type="url" id="url" placeholder="Url" required />
+        <input class="form__field" type="url" name="url" id="url" placeholder="Url" required />
       </div>
 
       <div class="form__group">
         <label class="form__label" for="tel">Tel (+380999999999): <abbr>*</abbr></label>
-        <input class="form__field" type="tel" id="tel" placeholder="Telephone" required
+        <input class="form__field" type="tel" name="tel" id="tel" placeholder="Telephone" required
           pattern="^\+?3?8?(0[5-9][0-9]\d{7})$" />
       </div>
 
@@ -58,7 +58,7 @@
 
       <div class="form__group">
         <label for="file" class="form__label">Upload file</label>
-        <input type="file" name="file" id="file" required>
+        <input type="file" name="attachment" id="file" required>
       </div>
 
       <fieldset class="form__group">
@@ -87,7 +87,7 @@
 
       <div class="form__group">
         <label class="form__label" for="message">Message:</label>
-        <textarea class="form__field form__field--textarea" id="message" placeholder="Message"></textarea>
+        <textarea class="form__field form__field--textarea" name="message" id="message" placeholder="Message"></textarea>
       </div>
 
       <div class="form__group">
