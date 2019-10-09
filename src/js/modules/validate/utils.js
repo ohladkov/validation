@@ -70,3 +70,23 @@ export const validateField = (field, options, radioFields = []) => {
     validate(requiredField);
   });
 };
+
+const handleErrors = (response) => {
+  if (!response.ok) {
+    const error = { code: response.status, message: response.statusText };
+    throw error;
+  }
+
+  return response;
+};
+
+export const getResponseData = async (url, options, onError) => {
+  try {
+    const response = await fetch(url, options).then(handleErrors);
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    return onError(error);
+  }
+};

@@ -5,11 +5,13 @@ import {
   validateField,
   getRadioFields,
   isRadio,
+  getResponseData,
 } from './utils';
 
 export default class Validator {
   constructor(form, options) {
     this.form = form;
+    this.action = form.action;
     this.options = Object.assign({}, defaults, options);
   }
 
@@ -57,6 +59,15 @@ export default class Validator {
     return this;
   }
 
+  onResponseError({ code, message }) {
+    const { errorMessages } = this.options;
+    const errorMessage = errorMessages[code] ? errorMessages[code] : message;
+
+    alert(errorMessage); // TODO: add error handling
+
+    return this;
+  }
+
   onChange() {
     this.requiredFields.forEach((requiredField) => {
       requiredField.addEventListener('change', (e) => {
@@ -70,16 +81,22 @@ export default class Validator {
   }
 
   onSubmit() {
-    this.form.addEventListener('submit', (e) => {
+    this.form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       this.validate();
 
       if (this.invalidFields.length) {
-        return false;
+        return;
       }
 
-      this.form.reset();
+      const { submitOptions: options } = this.options;
+
+      const responseData = await getResponseData(this.action, options, this.onResponseError.bind(this));
+
+      if (responseData && responseData.success) {
+        alert('success'); // TODO: Handle success response
+      }
     });
 
     return this;
