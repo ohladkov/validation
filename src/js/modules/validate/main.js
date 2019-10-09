@@ -1,5 +1,6 @@
 import defaults from './defaults';
 import {
+  mergeDeep,
   convertHtmlCollectionToArray,
   getSubmitButton,
   validateField,
@@ -12,7 +13,7 @@ export default class Validator {
   constructor(form, options) {
     this.form = form;
     this.action = form.action;
-    this.options = Object.assign({}, defaults, options);
+    this.options = mergeDeep(defaults, options);
   }
 
   get fields() {
@@ -60,10 +61,10 @@ export default class Validator {
   }
 
   onResponseError({ code, message }) {
-    const { errorMessages } = this.options;
-    const errorMessage = errorMessages[code] ? errorMessages[code] : message;
+    const { responseMessages } = this.options;
+    const responseMessage = responseMessages[code] ? responseMessages[code] : message;
 
-    alert(errorMessage); // TODO: add error handling
+    alert(responseMessage); // TODO: add error handling
 
     return this;
   }

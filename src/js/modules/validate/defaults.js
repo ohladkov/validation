@@ -7,7 +7,7 @@ export default {
       Accept: 'application/json',
     },
   },
-  errorMessages: {
-    404: 'Not Found',
+  responseMessages: {
+    404: 'Custom Not Found error message',
   },
 };
