@@ -69,6 +69,12 @@ export default class Validator {
     return this;
   }
 
+  onResponseSuccess() {
+    alert('success'); // TODO: Handle success response
+
+    return this;
+  }
+
   onChange() {
     this.requiredFields.forEach((requiredField) => {
       requiredField.addEventListener('change', (e) => {
@@ -93,10 +99,14 @@ export default class Validator {
 
       const { submitOptions: options } = this.options;
 
-      const responseData = await getResponseData(this.action, options, this.onResponseError.bind(this));
+      const responseData = await getResponseData(
+        this.action,
+        options,
+        this.onResponseError.bind(this),
+      );
 
       if (responseData && responseData.success) {
-        alert('success'); // TODO: Handle success response
+        this.onResponseSuccess();
       }
     });
 
