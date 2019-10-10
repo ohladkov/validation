@@ -4,6 +4,7 @@ export default {
   submitOptions: {
     method: 'GET',
     headers: {
+      credentials: 'same-origin',
       Accept: 'application/json',
     },
   },

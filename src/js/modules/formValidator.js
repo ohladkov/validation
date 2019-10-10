@@ -7,10 +7,7 @@ const options = {
     422: 'test',
   },
   submitOptions: {
-    method: 'GET',
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
+    method: 'POST',
   },
 };
 
