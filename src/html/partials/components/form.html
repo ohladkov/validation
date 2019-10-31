@@ -1,7 +1,7 @@
-<form action="http://localhost:8081/form" enctype="multipart/form-data" id="form" class="form">
+<form action="http://demo7069820.mockable.io/submit" enctype="multipart/form-data" id="form" class="form">
   <div class="form__group">
     <label class="form__label" for="name">Name: (John Doe) <abbr>*</abbr></label>
-    <input class="form__field validate" type="text" name="name" id="name" placeholder="Name"
+    <input class="form__field" type="text" name="name" id="name" placeholder="Name"
       pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" required />
   </div>
 
@@ -12,7 +12,7 @@
 
   <div class="form__group">
     <label class="form__label" for="password">Password (at least 4 symbols, max - 6): <abbr>*</abbr></label>
-    <input class="form__field validate" type="password" name="password" id="password" placeholder="Password" minlength="4" maxlength="6"
+    <input class="form__field" type="password" name="password" id="password" placeholder="Password" minlength="4" maxlength="6"
       autocomplete="current-password" required />
   </div>
 
@@ -84,6 +84,94 @@
   </div>
 
   <button class="btn">Submit</button>
-  <button type="reset" class="btn btn--reset">Reset</button>
+  <span class="note">* - required field</span>
+</form>
+
+<form action="http://demo7069820.mockable.io/submit" enctype="multipart/form-data" id="form1" class="form">
+  <div class="form__group">
+    <label class="form__label" for="name1">Name: (John Doe) <abbr>*</abbr></label>
+    <input class="form__field" type="text" name="name1" id="name1" placeholder="Name"
+      pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" required />
+  </div>
+
+  <div class="form__group">
+    <label class="form__label" for="email1">Email: (johnDoe@domain.com) <abbr>*</abbr></label>
+    <input class="form__field" type="email" name="email1" id="email1" placeholder="Email" required />
+  </div>
+
+  <div class="form__group">
+    <label class="form__label" for="password1">Password (at least 4 symbols, max - 6): <abbr>*</abbr></label>
+    <input class="form__field" type="password" name="password1" id="password1" placeholder="Password" minlength="4" maxlength="6"
+      autocomplete="current-password" required />
+  </div>
+
+  <div class="form__group">
+    <label class="form__label" for="age1">Age: (18-140) <abbr>*</abbr></label>
+    <input class="form__field" type="number" name="age1" id="age1" placeholder="Age" min="18" max="140" required />
+  </div>
+
+  <div class="form__group">
+    <label class="form__label" for="url1">Url: (http://johnDoe.com) <abbr>*</abbr></label>
+    <input class="form__field" type="url" name="url1" id="url1" placeholder="Url" required />
+  </div>
+
+  <div class="form__group">
+    <label class="form__label" for="tel1">Tel (+380999999999): <abbr>*</abbr></label>
+    <input class="form__field" type="tel" name="tel1" id="tel1" placeholder="Telephone" required
+      pattern="^\+?3?8?(0[5-9][0-9]\d{7})$" />
+  </div>
+
+  <div class="form__group">
+    <label class="form__label" for="country1">Country <abbr>*</abbr></label>
+    <select name="country1" id="country1" class="form__field" required>
+      <option value="" disabled selected>Choose your country</option>
+      <option value="ua">Ukraine</option>
+      <option value="us">USA</option>
+      <option value="uk">United Kingdom</option>
+    </select>
+  </div>
+
+  <div class="form__group">
+    <label for="file1" class="form__label">Upload file</label>
+    <input type="file" name="attachment1" id="file1" required>
+  </div>
+
+  <fieldset class="form__group">
+    <legend>Choose your gender: <abbr>*</abbr></legend>
+
+    <div class="radio-group">
+      <input type="radio" name="gender1" id="male1" required>
+      <label for="male1">Male</label>
+
+      <input type="radio" name="gender1" id="female1" required>
+      <label for="female1">Female</label>
+    </div>
+  </fieldset>
+
+  <fieldset class="form__group">
+    <legend>Select your preferred contact method: <abbr>*</abbr></legend>
+
+    <div class="radio-group">
+      <input type="radio" name="contact-method1" id="contact-email1" required>
+      <label for="contact-email1">Email</label>
+
+      <input type="radio" name="contact-method1" id="contact-phone1" required>
+      <label for="contact-phone1">Phone</label>
+    </div>
+  </fieldset>
+
+  <div class="form__group">
+    <label class="form__label" for="message1">Message:</label>
+    <textarea class="form__field form__field--textarea" name="message1" id="message1" placeholder="Message"></textarea>
+  </div>
+
+  <div class="form__group">
+    <label>
+      <input type="checkbox" name="subscribe1" id="subscribe1" required>
+      Subscribe to receive news
+    </label>
+  </div>
+
+  <button class="btn">Submit</button>
   <span class="note">* - required field</span>
 </form>

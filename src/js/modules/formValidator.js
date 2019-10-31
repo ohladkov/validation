@@ -1,9 +1,9 @@
 import Validator from './validate/main';
 
-const form = document.querySelector('#form');
+const form = document.querySelectorAll('.form');
 const options = {
   invalidClassName: 'test',
-  responseMessages: {
+  responseErrors: {
     422: 'test',
   },
   submitOptions: {

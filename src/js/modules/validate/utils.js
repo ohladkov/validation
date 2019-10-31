@@ -1,18 +1,42 @@
+import uuid from 'uuid/v4';
+
 const SUBMIT_TYPE = 'submit';
 const RADIO_TYPE = 'radio';
 
-export const convertHtmlCollectionToArray = collection => Array.from(collection);
+export const VALIDATE_ATTR = 'id';
 
-export const getSubmitButton = fields => fields.find(field => field.type === SUBMIT_TYPE);
+export const convertNodeListToArray = (collection) => Array.from(collection);
 
-export const getRadioFields = fields => fields.filter(field => field.type === RADIO_TYPE);
+export const getDataAttr = (el, attr) => el.dataset[attr];
 
-export const isRadio = field => field.type === RADIO_TYPE;
+export const setUniqueDataId = (elementsList) => {
+  const formattedElementsList = Array.isArray(elementsList)
+    ? elementsList
+    : convertNodeListToArray(elementsList);
+
+  return formattedElementsList.map((element) => {
+    const dataUUID = uuid();
+
+    element.dataset[VALIDATE_ATTR] = dataUUID;
+
+    return element;
+  });
+};
+
+export const getFormFields = (form) => convertNodeListToArray(form.elements);
+
+export const getRequiredFields = (fields) => fields.filter((field) => field.required);
+
+export const getSubmitButton = (fields) => fields.find((field) => field.type === SUBMIT_TYPE);
+
+export const isRadio = (field) => field.type === RADIO_TYPE;
+
+export const getRadioFields = (fields) => fields.filter((field) => field.type === RADIO_TYPE);
 
 export const getRadioFieldsByGroup = (field, radioFields) => {
   const { name } = field;
 
-  return radioFields.filter(radio => radio.name === name);
+  return radioFields.filter((radio) => radio.name === name);
 };
 
 export const clearError = (field, { errorSelector, invalidClassName }) => {
@@ -43,9 +67,9 @@ export const setError = (field, { errorSelector, invalidClassName }) => {
   parent.append(error);
 };
 
-export const validateField = (field, options, radioFields = []) => {
+export const validateField = (field, options, fieldsToValidate) => {
   const validate = (inputField) => {
-    const isValid = isRadio(inputField) ? false : inputField.checkValidity();
+    const isValid = inputField.checkValidity();
 
     if (isValid) {
       return;
@@ -63,7 +87,7 @@ export const validateField = (field, options, radioFields = []) => {
     }
   };
 
-  const requiredFields = radioFields.length ? getRadioFieldsByGroup(field, radioFields) : [field];
+  const requiredFields = isRadio(field) ? getRadioFieldsByGroup(field, fieldsToValidate) : [field];
 
   requiredFields.forEach((requiredField) => {
     clearError(requiredField, options);
@@ -71,9 +95,10 @@ export const validateField = (field, options, radioFields = []) => {
   });
 };
 
-const handleErrors = (response) => {
+export const filterResponseErrors = (response) => {
   if (!response.ok) {
     const error = { code: response.status, message: response.statusText };
+
     throw error;
   }
 
@@ -82,7 +107,7 @@ const handleErrors = (response) => {
 
 export const getResponseData = async (url, options, onError) => {
   try {
-    const response = await fetch(url, options).then(handleErrors);
+    const response = await fetch(url, options).then(filterResponseErrors);
     const data = await response.json();
 
     return data;
@@ -92,7 +117,7 @@ export const getResponseData = async (url, options, onError) => {
 };
 
 export const mergeDeep = (target, source) => {
-  const isObject = obj => obj && typeof obj === 'object';
+  const isObject = (obj) => obj && typeof obj === 'object';
 
   if (!isObject(target) || !isObject(source)) {
     return target;
@@ -105,7 +130,7 @@ export const mergeDeep = (target, source) => {
     if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
       target[key] = targetValue.concat(sourceValue);
     } else if (isObject(targetValue) && isObject(sourceValue)) {
-      target[key] = mergeDeep(Object.assign({}, targetValue), sourceValue);
+      target[key] = mergeDeep({ ...targetValue }, sourceValue);
     } else {
       target[key] = sourceValue;
     }

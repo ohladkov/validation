@@ -2,13 +2,12 @@ export default {
   errorSelector: '.error-message',
   invalidClassName: 'invalid',
   submitOptions: {
-    method: 'GET',
+    method: 'POST',
     headers: {
-      credentials: 'same-origin',
       Accept: 'application/json',
     },
   },
-  responseMessages: {
+  responseErrors: {
     404: 'Custom Not Found error message',
   },
 };
