@@ -1,0 +1,12 @@
+mixin checkbox(fieldData)
+  .form__group
+    label(
+      class= fieldData.label.class
+    )
+      input(
+        type= fieldData.type
+        class= fieldData.class
+        id= fieldData.id
+        name= fieldData.id
+      )&attributes(fieldData.attributes)
+      span= fieldData.label.text

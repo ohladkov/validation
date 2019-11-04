@@ -1,0 +1,18 @@
+mixin radioGroup(fieldData)
+  fieldset.form__group
+    legend(
+      class= fieldData.label.class
+    )= fieldData.label.text
+      if fieldData.attributes.required
+        abbr &nbsp;*
+    div(class= fieldData.radioGroupClass)
+      each item in fieldData.items
+        input(
+          type="radio"
+          name= fieldData.id
+          id= item.id
+        )&attributes(fieldData.attributes)
+        label(
+          for= item.id
+          class= item.label.class
+        )= item.label.text

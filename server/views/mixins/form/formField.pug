@@ -1,0 +1,26 @@
+include elements/label
+include elements/input
+include elements/textarea
+include elements/select
+include elements/checkbox
+include elements/radioGroup
+
+mixin formField(fieldData)
+  if fieldData.type === 'radio'
+    +radioGroup(fieldData)
+
+  else if fieldData.type === 'checkbox'
+    +checkbox(fieldData)
+
+  else
+    .form__group
+      +label(fieldData)
+
+      if fieldData.type === 'textarea'
+        +textarea(fieldData)
+
+      else if fieldData.type === 'select'
+        +select(fieldData)
+
+      else
+        +input(fieldData)

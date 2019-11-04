@@ -1,0 +1,16 @@
+extends layout.pug
+
+block content
+  include mixins/form/formField
+  include mixins/form/elements/button
+
+  .form-wrap
+    form(
+      action= formData.action
+      class= formData.class
+      id= formData.id
+    )
+      each fieldData in formData.fields
+        +formField(fieldData)
+
+      +button(formData)

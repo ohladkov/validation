@@ -1,0 +1,8 @@
+mixin label(fieldData)
+  if fieldData.label
+    label(
+      for= fieldData.id
+      class= fieldData.label.class
+    )= fieldData.label.text
+      if fieldData.attributes.required
+        abbr &nbsp;*

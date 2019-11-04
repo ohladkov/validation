@@ -1,0 +1,16 @@
+mixin select(fieldData)
+  select(
+    class= fieldData.class
+    id= fieldData.id
+    name= fieldData.id
+  )&attributes(fieldData.attributes)
+    if fieldData.attributes.placeholder
+      option(
+        value
+        selected
+        disabled
+      )= fieldData.attributes.placeholder
+    each item in fieldData.items
+      option(
+        value= item.value
+      )= item.text

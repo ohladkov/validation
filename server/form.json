@@ -1,0 +1,183 @@
+{
+  "id": "form",
+  "action": "form/submit",
+  "class": "form",
+  "submit": {
+    "class": "btn",
+    "text": "Submit"
+  },
+  "fields": [
+    {
+      "id": "name",
+      "type": "text",
+      "class": "form__field",
+      "attributes": {
+        "pattern": "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$",
+        "placeholder": "Please enter your name",
+        "required": true
+      },
+      "label": {
+        "text": "Name",
+        "class": "form__label"
+      }
+    },
+    {
+      "id": "email",
+      "type": "email",
+      "class": "form__field",
+      "attributes": {
+        "placeholder": "Please enter your email",
+        "required": true
+      },
+      "label": {
+        "text": "Email",
+        "class": "form__label"
+      }
+    },
+    {
+      "id": "password",
+      "type": "password",
+      "class": "form__field",
+      "attributes": {
+        "placeholder": "Please enter your password",
+        "minlength": 6,
+        "required": true
+      },
+      "label": {
+        "text": "Password (min 6 characters)",
+        "class": "form__label"
+      }
+    },
+    {
+      "id": "age",
+      "type": "number",
+      "class": "form__field",
+      "attributes": {
+        "placeholder": "Please enter your age",
+        "min": 18,
+        "max": 140,
+        "required": true
+      },
+      "label": {
+        "text": "Age (min 18, max 140)",
+        "class": "form__label"
+      }
+    },
+    {
+      "id": "country",
+      "type": "select",
+      "class": "form__field",
+      "attributes": {
+        "placeholder": "Please select your country",
+        "required": true
+      },
+      "label": {
+        "text": "Password (min 6 characters)",
+        "class": "form__label"
+      },
+      "items": [
+        {
+          "value": "ua",
+          "text": "Ukraine"
+        },
+        {
+          "value": "uk",
+          "text": "United Kingdom"
+        }
+      ]
+    },
+    {
+      "id": "gender",
+      "type": "radio",
+      "radioGroupClass": "form__wrap",
+      "attributes": {
+        "required": true
+      },
+      "label": {
+        "text": "Please select your gender",
+        "class": "form__label"
+      },
+      "items": [
+        {
+          "id": "male",
+          "label": {
+            "text": "Male",
+            "class": "form__label"
+          }
+        },
+        {
+          "id": "female",
+          "label": {
+            "text": "Female",
+            "class": "form__label"
+          }
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "type": "radio",
+      "radioGroupClass": "form__wrap",
+      "attributes": {
+        "required": true
+      },
+      "label": {
+        "text": "Please select your preferred contact method",
+        "class": "form__label"
+      },
+      "items": [
+        {
+          "id": "contact-email",
+          "label": {
+            "text": "Email",
+            "class": "form__label"
+          }
+        },
+        {
+          "id": "contact-phone",
+          "label": {
+            "text": "Phone",
+            "class": "form__label"
+          }
+        }
+      ]
+    },
+    {
+      "id": "message",
+      "type": "textarea",
+      "class": "form__field form__field--textarea",
+      "attributes": {
+        "placeholder": "Please enter your message"
+      },
+      "label": {
+        "text": "Message",
+        "class": "form__label"
+      }
+    },
+    {
+      "id": "attachment",
+      "type": "file",
+      "class": "form__field",
+      "attributes": {
+        "placeholder": "Please upload your file",
+        "required": true
+      },
+      "label": {
+        "text": "Upload file",
+        "class": "form__label"
+      }
+    },
+    {
+      "id": "subscribe",
+      "type": "checkbox",
+      "class": "form__field",
+      "attributes": {
+        "required": true
+      },
+      "label": {
+        "text": "Subscribe to receive news",
+        "class": "form__label"
+      }
+    }
+  ]
+}
