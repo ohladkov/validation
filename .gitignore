@@ -41,3 +41,6 @@ tmp
 
 # env variables
 .env
+
+#file upload folder
+/server/uploads

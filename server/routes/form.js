@@ -2,10 +2,12 @@ const express = require('express');
 const multer = require('multer');
 
 const formData = require('~server/form.json');
-const { createFolder } = require('~server/helpers');
 const { uploadsDir } = require('~root/config');
+const { createFolder, getFileFieldData } = require('~server/helpers');
 
 createFolder(uploadsDir);
+
+const fileFields = getFileFieldData(formData);
 
 const storage = multer.diskStorage({
   destination(req, res, cb) {
@@ -23,9 +25,8 @@ router.get('/', (req, res) => {
   res.render('form', { title: 'Form Page', formData });
 });
 
-router.post('/submit', upload.single('attachment'), (req, res) => {
+router.post('/submit', upload.fields(fileFields), (req, res) => {
   res.send({ success: true });
 });
-
 
 module.exports = router;

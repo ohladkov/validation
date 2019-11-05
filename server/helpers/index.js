@@ -11,4 +11,25 @@ const createFolder = (folderPath) => {
   return folderPath;
 };
 
-module.exports = { createFolder };
+const getFileFieldData = (formData) => {
+  const fileNames = formData.fields.reduce((acc, current) => {
+    const isFile = current.type === 'file';
+
+    if (isFile) {
+      const obj = {};
+
+      obj.name = current.id;
+
+      acc.push(obj);
+    }
+
+    return acc;
+  }, []);
+
+  return fileNames;
+};
+
+module.exports = {
+  createFolder,
+  getFileFieldData,
+};

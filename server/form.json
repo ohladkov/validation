@@ -155,10 +155,25 @@
       }
     },
     {
-      "id": "attachment",
+      "id": "attachment-1",
       "type": "file",
       "class": "form__field",
       "attributes": {
+        "accept": ".png",
+        "placeholder": "Please upload your file",
+        "required": true
+      },
+      "label": {
+        "text": "Upload file",
+        "class": "form__label"
+      }
+    },
+    {
+      "id": "attachment-2",
+      "type": "file",
+      "class": "form__field",
+      "attributes": {
+        "accept": "image/jpg",
         "placeholder": "Please upload your file",
         "required": true
       },
