@@ -59,7 +59,6 @@ export default class Validator {
         validateField(
           requiredField,
           options,
-          this.requiredFields[formId],
         )));
 
       this.toggleSubmitButton(formId);
@@ -67,7 +66,7 @@ export default class Validator {
       return this;
     }
 
-    validateField(field, options, this.requiredFields[formId]);
+    validateField(field, options);
     this.toggleSubmitButton(formId);
 
     return this;
@@ -122,7 +121,7 @@ export default class Validator {
         this.validate(null, formId);
 
         if (this.invalidFields[formId].length) {
-          return this;
+          return;
         }
 
         const { submitOptions: options } = this.options;

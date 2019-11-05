@@ -1,11 +1,72 @@
 import uuid from 'uuid/v4';
 
-const SUBMIT_TYPE = 'submit';
-const RADIO_TYPE = 'radio';
 
+const SUBMIT_TYPE = 'submit';
 export const VALIDATE_ATTR = 'id';
 
-export const convertNodeListToArray = (collection) => Array.from(collection);
+const convertNodeListToArray = (collection) => Array.from(collection);
+
+const setError = (field, { errorSelector, invalidClassName }) => {
+  if (!field.errorMessage) {
+    return;
+  }
+
+  const parent = field.parentNode;
+
+  if (parent.querySelector(errorSelector)) {
+    return;
+  }
+
+  const errorClassName = errorSelector.slice(1);
+  const error = document.createElement('span');
+
+  error.classList.add(errorClassName);
+  error.textContent = field.errorMessage;
+
+  parent.classList.add(invalidClassName);
+  parent.append(error);
+};
+
+const clearError = (field, { errorSelector, invalidClassName }) => {
+  const parent = field.parentNode;
+  const errorElement = parent.querySelector(errorSelector);
+
+  if (errorElement) {
+    errorElement.remove();
+  }
+
+  field.errorMessage = null;
+  parent.classList.remove(invalidClassName);
+};
+
+const validate = (field, options) => {
+  const isValid = field.checkValidity();
+
+  if (isValid) {
+    return;
+  }
+
+  const fieldValidity = field.validity;
+
+  // eslint-disable-next-line
+  for (const validityType in fieldValidity) {
+    if (fieldValidity[validityType]) {
+      field.errorMessage = field.validationMessage;
+
+      setError(field, options);
+    }
+  }
+};
+
+const filterResponseErrors = (response) => {
+  if (!response.ok) {
+    const error = { code: response.status, message: response.statusText };
+
+    throw error;
+  }
+
+  return response;
+};
 
 export const getDataAttr = (el, attr) => el.dataset[attr];
 
@@ -29,80 +90,9 @@ export const getRequiredFields = (fields) => fields.filter((field) => field.requ
 
 export const getSubmitButton = (fields) => fields.find((field) => field.type === SUBMIT_TYPE);
 
-export const isRadio = (field) => field.type === RADIO_TYPE;
-
-export const getRadioFields = (fields) => fields.filter((field) => field.type === RADIO_TYPE);
-
-export const getRadioFieldsByGroup = (field, radioFields) => {
-  const { name } = field;
-
-  return radioFields.filter((radio) => radio.name === name);
-};
-
-export const clearError = (field, { errorSelector, invalidClassName }) => {
-  const parent = field.parentNode;
-  const errorElement = parent.querySelector(errorSelector);
-
-  if (errorElement) {
-    errorElement.remove();
-  }
-
-  field.errorMessage = null;
-  parent.classList.remove(invalidClassName);
-};
-
-export const setError = (field, { errorSelector, invalidClassName }) => {
-  if (!field.errorMessage) {
-    return;
-  }
-
-  const parent = field.parentNode;
-  const errorClassName = errorSelector.slice(1);
-  const error = document.createElement('span');
-
-  error.classList.add(errorClassName);
-  error.textContent = field.errorMessage;
-
-  parent.classList.add(invalidClassName);
-  parent.append(error);
-};
-
-export const validateField = (field, options, fieldsToValidate) => {
-  const validate = (inputField) => {
-    const isValid = inputField.checkValidity();
-
-    if (isValid) {
-      return;
-    }
-
-    const fieldValidity = inputField.validity;
-
-    // eslint-disable-next-line
-    for (const validityType in fieldValidity) {
-      if (fieldValidity[validityType]) {
-        inputField.errorMessage = inputField.validationMessage;
-
-        setError(inputField, options);
-      }
-    }
-  };
-
-  const requiredFields = isRadio(field) ? getRadioFieldsByGroup(field, fieldsToValidate) : [field];
-
-  requiredFields.forEach((requiredField) => {
-    clearError(requiredField, options);
-    validate(requiredField);
-  });
-};
-
-export const filterResponseErrors = (response) => {
-  if (!response.ok) {
-    const error = { code: response.status, message: response.statusText };
-
-    throw error;
-  }
-
-  return response;
+export const validateField = (field, options) => {
+  clearError(field, options);
+  validate(field, options);
 };
 
 export const getResponseData = async (url, options, onError) => {
