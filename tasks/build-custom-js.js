@@ -17,7 +17,11 @@ module.exports = function(options) {
         debug: !options.isProduction
       })
       .transform('babelify', {
-        presets: ['es2015']
+        presets: ["@babel/preset-env"],
+        plugins: [
+          '@babel/plugin-proposal-optional-chaining',
+          '@babel/plugin-transform-runtime',
+        ],
       })
       .bundle().on('error', function(err) {
         options.showError.apply(this, ['JS error', err])

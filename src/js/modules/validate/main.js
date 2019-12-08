@@ -1,68 +1,111 @@
 import defaults from './defaults';
 import {
-  convertHtmlCollectionToArray,
+  VALIDATE_ATTR,
+  setUniqueDataId,
+  mergeDeep,
+  getDataAttr,
+  getFormFields,
+  getRequiredFields,
   getSubmitButton,
   validateField,
-  getRadioFields,
-  isRadio,
+  getResponseData,
 } from './utils';
 
 export default class Validator {
-  constructor(form, options) {
-    this.form = form;
-    this.options = Object.assign({}, defaults, options);
+  constructor(forms, options) {
+    this.forms = setUniqueDataId(forms);
+    this.formIds = this.forms.map((form) => getDataAttr(form, VALIDATE_ATTR));
+    this.options = mergeDeep(defaults, options);
   }
 
   get fields() {
-    return convertHtmlCollectionToArray(this.form.elements);
+    return this.forms.reduce((acc, current, index) => {
+      acc[this.formIds[index]] = getFormFields(current);
+
+      return acc;
+    }, {});
   }
 
   get requiredFields() {
-    return this.fields.filter(field => field.required);
+    return this.forms.reduce((acc, current, index) => {
+      acc[this.formIds[index]] = getRequiredFields(this.fields[this.formIds[index]]);
+
+      return acc;
+    }, {});
   }
 
   get invalidFields() {
-    return this.requiredFields.filter(field => Boolean(field.errorMessage));
+    return this.forms.reduce((acc, current, index) => {
+      acc[this.formIds[index]] = this.requiredFields[this.formIds[index]]
+        .filter((field) => Boolean(field.errorMessage));
+
+      return acc;
+    }, {});
   }
 
-  get radioFields() {
-    return getRadioFields(this.fields);
+  get submitButtons() {
+    return this.forms.reduce((acc, current, index) => {
+      acc[this.formIds[index]] = getSubmitButton(this.fields[this.formIds[index]]);
+
+      return acc;
+    }, {});
   }
 
-  get submitButton() {
-    return getSubmitButton(this.fields);
-  }
-
-  validate(field) {
+  validate(field, formId) {
     const { options } = this;
 
     if (!field) {
-      this.requiredFields.forEach(requiredField => validateField(requiredField, options));
-      this.toggleSubmitButton();
+      this.requiredFields[formId].forEach((requiredField) => (
+        validateField(
+          requiredField,
+          options,
+          this.requiredFields[formId],
+        )));
 
-      return;
+      this.toggleSubmitButton(formId);
+
+      return this;
     }
 
-    const radioFields = isRadio(field) ? this.radioFields : [];
-
-    validateField(field, options, radioFields);
-    this.toggleSubmitButton();
+    validateField(field, options, this.requiredFields[formId]);
+    this.toggleSubmitButton(formId);
 
     return this;
   }
 
-  toggleSubmitButton() {
-    this.submitButton.disabled = Boolean(this.invalidFields.length);
+  toggleSubmitButton(formId) {
+    this.submitButtons[formId].disabled = Boolean(this.invalidFields[formId].length);
+
+    return this;
+  }
+
+  onResponseError({ code, message }) {
+    const { responseErrors } = this.options;
+    const responseMessage = responseErrors[code] || message;
+
+    alert(responseMessage); // TODO: add error handling
+
+    return this;
+  }
+
+  onResponseSuccess(formId) {
+    alert('success'); // TODO: Handle success response
+
+    this.forms.find((form) => getDataAttr(form, VALIDATE_ATTR) === formId).reset();
 
     return this;
   }
 
   onChange() {
-    this.requiredFields.forEach((requiredField) => {
-      requiredField.addEventListener('change', (e) => {
-        e.preventDefault();
+    Object.values(this.requiredFields).forEach((requiredFields) => {
+      requiredFields.forEach((requiredField) => {
+        const formId = getDataAttr(requiredField.closest('form'), VALIDATE_ATTR);
 
-        this.validate(e.target);
+        requiredField.addEventListener('change', (e) => {
+          e.preventDefault();
+
+          this.validate(e.target, formId);
+        });
       });
     });
 
@@ -70,25 +113,43 @@ export default class Validator {
   }
 
   onSubmit() {
-    this.form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    this.forms.forEach((form) => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-      this.validate();
+        const formId = getDataAttr(form, VALIDATE_ATTR);
 
-      if (this.invalidFields.length) {
-        return false;
-      }
+        this.validate(null, formId);
 
-      this.form.reset();
+        if (this.invalidFields[formId].length) {
+          return this;
+        }
+
+        const { submitOptions: options } = this.options;
+
+        options.body = new FormData(form);
+
+        const responseData = await getResponseData(
+          form.action,
+          options,
+          this.onResponseError.bind(this),
+        );
+
+        if (responseData && responseData.success) {
+          this.onResponseSuccess(formId);
+        }
+      });
     });
 
     return this;
   }
 
   init() {
-    if (!this.form.noValidate) {
-      this.form.noValidate = true;
-    }
+    this.forms.forEach((form) => {
+      if (!form.noValidate) {
+        form.noValidate = true;
+      }
+    });
 
     this.onChange();
     this.onSubmit();
